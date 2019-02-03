@@ -10,6 +10,7 @@ namespace App\Http\Components\User\Controllers;
 
 use App\Http\Components\Controller;
 use App\Http\Components\User\UserModel;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -17,7 +18,8 @@ class UserController extends Controller
     public function __construct(UserModel $user){
         $this->user = $user;
     }
-    public function list(){
+    public function list( Request $request ){
+        var_dump( $request->input('name') );
         $data = $this->user->getList();
         return view('user',['data' => $data]);
     }

@@ -14,8 +14,17 @@ if (! function_exists('get_component_resource')) {
      */
     function get_component_resource($path = '')
     {
-        $path       = app()->make('request')->path();
-        $viewFile   = 'App\Http\Components\\'.$path.'\views\\';
+        $viewFile       = '';
+        try {
+            $path = app()->make('request')->path();
+            $viewFile = 'App\Http\Components\\' . $path . '\views\\';
+        }catch (ReflectionException $exception) {
+            // Output expected ReflectionException.
+//            var_dump($exception);
+        } catch (Exception $exception) {
+            // Output unexpected Exceptions.
+//            var_dump($exception);
+        }
         return $viewFile;
     }
 }
