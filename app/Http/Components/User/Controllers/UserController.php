@@ -19,7 +19,7 @@ class UserController extends Controller
         $this->user = $user;
     }
     public function list( Request $request ){
-        var_dump( $request->input('name') );
+        var_dump( $request->input('name', 'nothing is passed') );
         $data = $this->user->getList();
         return view('user',['data' => $data]);
     }

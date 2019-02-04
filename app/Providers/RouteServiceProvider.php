@@ -51,7 +51,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        $path       = $this->app['request']->path();
+        $path       = get_component();
         $routeFile  = $this->namespace.'\\'.$path.'\routes.php';
         $routeFile  = file_exists($routeFile)?$routeFile:'routes/web.php';
         Route::middleware('web')

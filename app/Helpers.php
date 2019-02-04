@@ -16,8 +16,8 @@ if (! function_exists('get_component_resource')) {
     {
         $viewFile       = '';
         try {
-            $path = app()->make('request')->path();
-            $viewFile = 'App\Http\Components\\' . $path . '\views\\';
+            $path       = get_component();
+            $viewFile   = 'App\Http\Components\\' . $path . '\Views\\';
         }catch (ReflectionException $exception) {
             // Output expected ReflectionException.
 //            var_dump($exception);
@@ -29,7 +29,7 @@ if (! function_exists('get_component_resource')) {
     }
 }
 
-if (! function_exists('get_component_resource')) {
+if (! function_exists('p')) {
     function p($printData, $haltExec = false)
     {
         if (is_array($printData) || is_object($printData)) {
@@ -43,5 +43,22 @@ if (! function_exists('get_component_resource')) {
         if ($haltExec) {
             die();
         }
+    }
+}
+if (! function_exists('get_component')) {
+    function get_component()
+    {
+        $path = explode('/', app()->make('request')->path());
+        return $path[0];
+    }
+}
+
+if (! function_exists('get_resource_path')) {
+    function get_resource_path( $resourceName = null )
+    {
+        if(!$resourceName)
+            return false;
+        $path = asset("app/Http/Components/".ucfirst(get_component())."/Views/{$resourceName}/style.css");
+        return $path;
     }
 }
