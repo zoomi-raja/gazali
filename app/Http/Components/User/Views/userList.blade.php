@@ -9,5 +9,10 @@
 @endsection
 
 @section('content')
-    <p>{{$data}}</p>
+    <div class="container">
+        @foreach ($users as $user)
+            {{ $user->NAME }}<br>
+        @endforeach
+    </div>
+    {{ $users->links() }}
 @endsection

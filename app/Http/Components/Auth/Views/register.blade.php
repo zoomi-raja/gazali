@@ -2,11 +2,11 @@
 @section('title', 'Register User')
 
 @section('css')
-@parent
-<link rel="stylesheet" type="text/css" href="{{ get_resource_path('css') }}">
+    @parent
+    <link rel="stylesheet" type="text/css" href="{{ get_resource_path('css') }}">
 @endsection
 @section('content')
-    <form action="{{action('User\Controllers\AddController@add')}}" style="border:1px solid #ccc" method="post">
+    <form action="{{action('Auth\Controllers\RegisterController@registerUser')}}" style="border:1px solid #ccc" method="post">
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -30,6 +30,9 @@
             <label for="email"><b>Email</b></label>
             <input type="text" placeholder="Enter Email" name="email" required>
 
+            <label for="psw-repeat"><b>Password</b></label>
+            <input type="password" placeholder="password" name="password" required>
+
             <label for="psw"><b>Name</b></label>
             <input type="text" placeholder="Enter name" name="name" required>
 
@@ -43,7 +46,7 @@
             <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
 
             <div class="clearfix">
-                <button type="submit" class="signupbtn">add User</button>
+                <button type="submit" class="signupbtn">Register</button>
             </div>
         </div>
     </form>

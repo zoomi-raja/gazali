@@ -48,7 +48,15 @@ if (! function_exists('p')) {
 if (! function_exists('get_component')) {
     function get_component()
     {
+        /**
+            *This array just to map paths which are not any resource custom binding
+            *$var array;
+        */
+        $mapPaths = ['login' => 'auth', 'register' => 'auth' ];
+
         $path = explode('/', app()->make('request')->path());
+        if(isset($mapPaths[$path[0]]))
+            return $mapPaths[$path[0]];
         return $path[0];
     }
 }

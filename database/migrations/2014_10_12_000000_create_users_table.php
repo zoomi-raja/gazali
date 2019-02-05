@@ -23,8 +23,9 @@ class CreateUsersTable extends Migration
             $table->date('DOB');
             $table->string('PASSWORD');
             $table->string('PHONE')->nullable();
-            $table->boolean('ACTIVE');
-            $table->boolean('REMEMBER_TOKEN');
+            $table->boolean('ACTIVE')->default(true);
+            $table->boolean('VERIFIED')->default(false);
+            $table->boolean('REMEMBER_TOKEN')->default(false);
             $table->dateTime('CREATED_AT');
             $table->dateTime('UPDATED_AT');
             $table->dateTime('LAST_LOGIN')->nullable();

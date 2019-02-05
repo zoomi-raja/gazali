@@ -51,12 +51,20 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        $path       = get_component();
-        $routeFile  = $this->namespace.'\\'.$path.'\routes.php';
-        $routeFile  = file_exists($routeFile)?$routeFile:'routes/web.php';
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path($routeFile));
+        if (strpos(php_sapi_name(), 'cli') !== false) {
+            //todo here can add all route files in loop
+            $routeFiles[]    = $this->namespace.'\Auth\routes.php';
+            $routeFiles[]    = $this->namespace.'\User\routes.php';
+        }else{
+            $path           = get_component();
+            $routeFile      = $this->namespace.'\\'.$path.'\routes.php';
+            $routeFiles[]   = file_exists($routeFile)?$routeFile:'routes/web.php';
+        }
+        $routeGenerator = Route::middleware('web')
+             ->namespace($this->namespace);
+        foreach ($routeFiles as $route){
+            $routeGenerator->group(base_path($route));
+        }
     }
 
     /**

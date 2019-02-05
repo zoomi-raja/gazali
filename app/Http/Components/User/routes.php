@@ -7,4 +7,4 @@
  */
 Route::get('user/add', 'User\Controllers\AddController@showForm');
 Route::post('user/add', 'User\Controllers\AddController@add');
-Route::get('user', 'User\Controllers\UserController@list');
+Route::get('user', 'User\Controllers\UserController@list')->middleware('guest');
