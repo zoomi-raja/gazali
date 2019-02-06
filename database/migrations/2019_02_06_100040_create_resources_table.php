@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class CreateGroupsTable extends Migration
+class CreateResourcesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class CreateGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
-            $table->increments('ID');
+        Schema::create('resources', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('NAME');
             $table->string('KEY');
             $table->dateTime('CREATED_AT')->default(DB::raw('CURRENT_TIMESTAMP'));
@@ -23,7 +23,7 @@ class CreateGroupsTable extends Migration
         });
 
         //default groups
-        $this->addDefaultGroups();
+        $this->addDefaultResources();
     }
 
     /**
@@ -33,26 +33,38 @@ class CreateGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('resources');
     }
 
-    protected function addDefaultGroups(){
-        DB::table('groups')->insert([
+    protected function addDefaultResources(){
+        DB::table('resources')->insert([
             array(
-                'NAME'  => 'Super Admin',
-                'KEY'   => 'SUPER_ADMIN',
+                'NAME'  => 'User',
+                'KEY'   => 'USER',
             ),
             array(
-                'NAME'  => 'Admin',
-                'KEY'   => 'ADMIN',
+                'NAME'  => 'Resource',
+                'KEY'   => 'RESOURCE',
             ),
             array(
-                'NAME'  => 'Teacher',
-                'KEY'   => 'TEACHER',
+                'NAME'  => 'Group',
+                'KEY'   => 'GROUP',
+            ),
+            array(
+                'NAME'  => 'Role',
+                'KEY'   => 'ROLE',
             ),
             array(
                 'NAME'  => 'Student',
                 'KEY'   => 'STUDENT',
+            ),
+            array(
+                'NAME'  => 'Class',
+                'KEY'   => 'CLASS',
+            ),
+            array(
+                'NAME'  => 'School',
+                'KEY'   => 'SCHOOL',
             )
         ]);
     }

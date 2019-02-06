@@ -11,6 +11,7 @@ namespace App\Http\Components\User\Controllers;
 use App\Http\Components\Controller;
 use App\Http\Components\User\UserModel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -18,8 +19,10 @@ class UserController extends Controller
     public function __construct(){
     }
     public function list( UserModel $user ){
-        Auth::logout();
-        $users = $user->paginate(10);
+//        DB::enableQueryLog();
+        $users = $user->getGroups();//->paginate(10);
+//        dd(DB::getQueryLog());
+        var_dump($users);die;
         return view('userList',compact('users'));
     }
 }

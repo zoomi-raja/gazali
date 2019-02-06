@@ -15,7 +15,8 @@ class UserModel extends Authenticatable{
     use Notifiable;
 
 
-    protected $table = 'users';
+    protected $table        = 'users';
+    protected $primaryKey   = 'ID';
     /**
      * The attributes that are mass assignable.
      *
@@ -45,5 +46,11 @@ class UserModel extends Authenticatable{
     public function getAuthPassword()
     {
         return $this->PASSWORD;
+    }
+
+    public function getGroups(){
+
+        return $this->belongsToMany('App\Http\Components\Group\GroupModel', 'group_user', 'U_ID', 'G_ID')->get();
+//        return $this->hasMany('App\GroupUser','U_ID')->get();
     }
 }

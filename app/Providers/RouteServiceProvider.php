@@ -55,6 +55,7 @@ class RouteServiceProvider extends ServiceProvider
             //todo here can add all route files in loop
             $routeFiles[]    = $this->namespace.'\Auth\routes.php';
             $routeFiles[]    = $this->namespace.'\User\routes.php';
+            $routeFiles[]    = $this->namespace.'\Group\routes.php';
         }else{
             $path           = get_component();
             $routeFile      = $this->namespace.'\\'.$path.'\routes.php';
