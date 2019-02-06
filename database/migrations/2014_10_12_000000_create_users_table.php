@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->char('GENDER')->default('M');
             $table->string('PHOTO')->nullable();
             $table->date('DOB');
-            $table->string('PASSWORD');
+            $table->string('PASSWORD', 250);
             $table->string('PHONE')->nullable();
             $table->boolean('ACTIVE')->default(true);
             $table->boolean('VERIFIED')->default(false);
@@ -29,7 +29,7 @@ class CreateUsersTable extends Migration
             $table->dateTime('CREATED_AT');
             $table->dateTime('UPDATED_AT');
             $table->dateTime('LAST_LOGIN')->nullable();
-//            $table->rememberToken();
+            $table->rememberToken();
 //            $table->timestamps();
         });
     }

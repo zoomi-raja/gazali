@@ -36,4 +36,14 @@ class UserModel extends Authenticatable{
     public function getList(){
         return 'here will fetch data from list';
     }
+
+    /**
+     * Get the password for the user.
+     *
+     * @return string
+     */
+    public function getAuthPassword()
+    {
+        return $this->PASSWORD;
+    }
 }

@@ -57,7 +57,7 @@ class RegisterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function registerUser(Request $request){
-       $this->register($request);
+       return $this->register($request);
     }
 
     /**
