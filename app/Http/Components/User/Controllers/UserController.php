@@ -19,10 +19,25 @@ class UserController extends Controller
     public function __construct(){
     }
     public function list( UserModel $user ){
-//        DB::enableQueryLog();
-        $users = $user->getGroups();//->paginate(10);
-//        dd(DB::getQueryLog());
-        var_dump($users);die;
+//        Auth::logout();
+        DB::enableQueryLog();
+//        $users = Auth::User()->groups()->get();//->paginate(10);
+        $users = $user->find(2)->getGroups();
+        dd(DB::getQueryLog());
         return view('userList',compact('users'));
     }
 }
+
+
+//all these working examples
+//for insetion a new group
+// UserModel::find(2)->groups()->attach($groups)
+//this one only groups of authorize user
+//Auth::User()->groups()->get();
+
+//all user and groups
+//$users = Auth::User()->groups()->get();//;
+//$users = UserModel::find(2)->groups()->get();
+//to get all users with there role
+//$temp = UserModel::with('groups')->get(); or  UserModel::getGroups()
+//note all() return collection not model intance;

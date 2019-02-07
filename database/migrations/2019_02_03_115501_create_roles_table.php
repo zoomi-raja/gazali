@@ -14,15 +14,15 @@ class CreateRolesTable extends Migration
     public function up()
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->increments('ID');
-            $table->integer('U_ID');
-            $table->integer('S_ID');
-            $table->integer('R_ID');
-            $table->boolean('VIEW');
-            $table->boolean('ADD');
-            $table->boolean('UPDATE');
-            $table->dateTime('CREATED_AT')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->dateTime('UPDATED_AT')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->increments('id');
+            $table->integer('u_id');
+            $table->integer('s_id');
+            $table->integer('r_id');
+            $table->boolean('view');
+            $table->boolean('add');
+            $table->boolean('update');
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

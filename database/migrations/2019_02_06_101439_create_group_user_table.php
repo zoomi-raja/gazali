@@ -14,10 +14,10 @@ class CreateGroupUserTable extends Migration
     public function up()
     {
         Schema::create('group_user', function (Blueprint $table) {
-            $table->integer('G_ID');
-            $table->integer('U_ID');
-            $table->dateTime('CREATED_AT')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->dateTime('UPDATED_AT')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->integer('g_id');
+            $table->integer('u_id');
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

@@ -9,6 +9,7 @@ namespace App\Http\Components\User;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Http\Components\Group\GroupModel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class UserModel extends Authenticatable{
@@ -16,7 +17,7 @@ class UserModel extends Authenticatable{
 
 
     protected $table        = 'users';
-    protected $primaryKey   = 'ID';
+//    protected $primaryKey   = 'ID';
     /**
      * The attributes that are mass assignable.
      *
@@ -43,14 +44,18 @@ class UserModel extends Authenticatable{
      *
      * @return string
      */
-    public function getAuthPassword()
-    {
-        return $this->PASSWORD;
-    }
+//    public function getAuthPassword()
+//    {
+//        return $this->PASSWORD;
+//    }
 
-    public function getGroups(){
-
-        return $this->belongsToMany('App\Http\Components\Group\GroupModel', 'group_user', 'U_ID', 'G_ID')->get();
+    public function groups(){
+        return $this->belongsToMany(GroupModel::class, 'group_user', 'u_id', 'g_id');
 //        return $this->hasMany('App\GroupUser','U_ID')->get();
     }
+    public function scopeGetGroups($query)
+    {
+        return $query->with("groups")->get();
+    }
+
 }
