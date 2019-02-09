@@ -6,25 +6,19 @@
  * Time: 10:04 AM
  */
 
-namespace App\Http\Components\User\Controllers;
+namespace App\Http\Components\Resource\Controllers;
 
 use App\Http\Components\Controller;
-use App\Http\Components\User\UserModel;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Components\Resource\ResourceModel;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    private $user;
     public function __construct(){
     }
-    public function list( UserModel $user ){
-        Auth::logout();
-        DB::enableQueryLog();
-//        $users = Auth::User()->groups()->get();//->paginate(10);
-        $users = $user->find(1)->getGroups();
-//        dd(DB::getQueryLog());
-        return view('userList',compact('users'));
+    public function list( ResourceModel $resource ){
+        $resources = $resource->find(1);
+        return view('resourceList',compact('resources'));
     }
 }
 

@@ -8,8 +8,14 @@
 namespace App\Http\Components\Group;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
+use App\Http\Components\Resource\ResourceModel;
 
 class GroupModel extends Model {
     protected $table = 'groups';
+
+    public function resources(){
+        return $this->belongsToMany(ResourceModel::class, 'roles', 'r_id', 'g_id')->withPivot('view', 'add', 'update');
+//        GroupModel::Find(3)->resources()->attach($resource,['view'=>true,'add'=>false,'update'=>false, 's_id' => 0 ]);
+
+    }
 }

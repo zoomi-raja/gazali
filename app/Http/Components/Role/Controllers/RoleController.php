@@ -6,10 +6,10 @@
  * Time: 10:04 AM
  */
 
-namespace App\Http\Components\User\Controllers;
+namespace App\Http\Components\Role\Controllers;
 
 use App\Http\Components\Controller;
-use App\Http\Components\User\UserModel;
+use App\Http\Components\Role\RoleModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -18,13 +18,9 @@ class UserController extends Controller
     private $user;
     public function __construct(){
     }
-    public function list( UserModel $user ){
-        Auth::logout();
-        DB::enableQueryLog();
-//        $users = Auth::User()->groups()->get();//->paginate(10);
-        $users = $user->find(1)->getGroups();
-//        dd(DB::getQueryLog());
-        return view('userList',compact('users'));
+    public function list( RoleModel $role ){
+        $roles = $role->find(1);
+        return view('roleList',compact('roles'));
     }
 }
 
