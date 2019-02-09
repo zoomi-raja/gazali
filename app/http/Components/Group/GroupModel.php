@@ -15,6 +15,7 @@ class GroupModel extends Model {
 
     public function resources(){
         return $this->belongsToMany(ResourceModel::class, 'roles', 'r_id', 'g_id')->withPivot('view', 'add', 'update');
+        //to attach
 //        GroupModel::Find(3)->resources()->attach($resource,['view'=>true,'add'=>false,'update'=>false, 's_id' => 0 ]);
 
     }
