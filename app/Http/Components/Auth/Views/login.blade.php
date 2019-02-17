@@ -1,12 +1,10 @@
 @extends('..\..\..\..\..\layouts.app')
-@section('title', 'Register User')
-
+@section('title', 'Login User')
 @section('css')
     @parent
     <link rel="stylesheet" type="text/css" href="{{ get_resource_path('css') }}">
 @endsection
 @section('content')
-    <form action="{{action('Auth\Controllers\LoginController@login')}}" style="border:1px solid #ccc" method="post">
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -21,26 +19,53 @@
                 {{ session()->get('alert-success') }}
             </div>
         @endif
-        @csrf
-        <div class="container">
-            <h1>Sign In</h1>
-            <p>Please fill in this form.</p>
-            <hr>
-
-            <label for="email"><b>Email</b></label>
-            <input type="text" placeholder="Enter Email" name="email" required>
-
-            <label for="psw-repeat"><b>Password</b></label>
-            <input type="password" placeholder="password" name="password" required>
-
-            <label>
-                <input type="checkbox" checked="checked" name="remember_token" style="margin-bottom:15px"> Remember me
-            </label>
-
-            <div class="clearfix">
-                <button type="submit" class="signupbtn">Sign In</button>
+<div id="loader">
+    <div class="spinner"></div>
+</div>
+<script>
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('loader');
+        setTimeout(() => {
+            loader.classList.add('fadeOut');
+        }, 300);
+    });
+</script>
+<div class="peers ai-s fxw-nw h-100vh">
+    <div class="d-n@sm- peer peer-greed h-100 pos-r bgr-n bgpX-c bgpY-c bgsz-cv" style="background-image:url(<?=asset('public/assets/static/images/bg.jpg')?>)">
+        <div class="pos-a centerXY">
+            <div class="bgc-white bdrs-50p pos-r" style="width:120px;height:120px">
+                <img class="pos-a centerXY" src="<?=asset('public/assets/static/images/logo.png')?>" alt="">
             </div>
         </div>
-    </form>
-
+    </div>
+    <div class="col-12 col-md-4 peer pX-40 pY-80 h-100 bgc-white scrollable pos-r" style="min-width:320px">
+        <h4 class="fw-300 c-grey-900 mB-40">Login</h4>
+        <form action="{{action('Auth\Controllers\LoginController@login')}}" method="post">
+            @csrf
+            <div class="form-group"><label class="text-normal text-dark">Username</label>
+                <input type="email" name="email" class="form-control" placeholder="John Doe">
+            </div>
+            <div class="form-group"><label class="text-normal text-dark">Password</label>
+                <input type="password"  name="password" class="form-control" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <div class="peers ai-c jc-sb fxw-nw">
+                    <div class="peer">
+                        <div class="checkbox checkbox-circle checkbox-info peers ai-c">
+                            <input type="checkbox" id="inputCall1" name="remember_token" class="peer">
+                            <label for="inputCall1" class="peers peer-greed js-sb ai-c">
+                                <span class="peer peer-greed">Remember Me</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="peer">
+                        <button class="btn btn-primary">Login</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="<?=asset('public/js/vendor.js')?>"></script>
+<script type="text/javascript" src="<?=asset('public/js/bundle.js')?>"></script>
 @endsection
