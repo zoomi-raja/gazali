@@ -10,6 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
+Route::get('/', [ 'middleware' => 'auth',function () {
     return view('welcome');
+}]);
+
+Route::get('logout',function () {
+    \Illuminate\Support\Facades\Auth::logout();
+    return redirect('login');
 });

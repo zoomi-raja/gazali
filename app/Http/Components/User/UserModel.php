@@ -51,7 +51,18 @@ class UserModel extends Authenticatable{
 
     public function groups(){
         return $this->belongsToMany(GroupModel::class, 'group_user', 'u_id', 'g_id');
-//        return $this->hasMany('App\GroupUser','U_ID')->get();
+    }
+
+    public function schoolPivotRelation(){
+        return $this->hasMany(UserClassModel::class,'u_id');
+    }
+    public function scopeEntityRelation($query){
+        return $query
+            ->join('user_cs','users.id','=','user_cs.u_id')
+            ->join('class_school','user_cs.cs_id','=','class_school.id')
+            ->select(['class_school.c_id','class_school.s_id'])
+            ->where('users.id',$this->id)
+            ->get()->toArray();
     }
     public function scopeGetGroups($query)
     {
