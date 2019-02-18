@@ -11,7 +11,7 @@
 @section('content')
     <div class="container">
         @foreach ($groups as $user)
-            {{ $user->NAME }}<br>
+            {{ $user->name }}<br>
         @endforeach
     </div>
     {{ $groups->links() }}

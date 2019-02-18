@@ -19,12 +19,14 @@ class UserController extends Controller
     public function __construct(){
     }
     public function list( UserModel $user ){
-//        Auth::logout();
-        DB::enableQueryLog();
-//        $users = Auth::User()->groups()->get();//->paginate(10);
-        $users = $user->find(2)->getGroups();
-        dd(DB::getQueryLog());
+        $users = $user->with('groups')->get();
         return view('userList',compact('users'));
+    }
+
+
+    public function detail( $id ){
+        $user = UserModel::with('groups')->find($id);
+        return view('userDetail',compact('user'));
     }
 }
 
@@ -41,3 +43,4 @@ class UserController extends Controller
 //to get all users with there role
 //$temp = UserModel::with('groups')->get(); or  UserModel::getGroups()
 //note all() return collection not model intance;
+//Parcel::with(['tractor'=>function($q){$q->wherePivot('date','<','2019/2/12');}])->whereHas('tractor',function($q){$q->where('tractors.id','2');})->where('processed',1)->where('id',4)->get();
