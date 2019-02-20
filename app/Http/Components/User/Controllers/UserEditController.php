@@ -13,24 +13,23 @@ use App\Http\Components\Controller;
 use App\Http\Components\School\SchoolModel;
 use App\Http\Components\User\UserClassModel;
 use App\Http\Components\User\UserModel;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserEditController extends Controller
 {
-    public function __construct(){
+    public $request;
+    public function __construct(Request $request){
+        $this->request = $request;
     }
 
-    public function detail(){
-        $user       = Auth::User();
-        $entityIds  = $user->entityRelation();
-        DB::enableQueryLog();
-        UserClassModel::with(['haveSchool','haveSchool.classes'])->where('u_id',1)->whereHas('haveSchool.classes',function($query){$query->where('classes.id','=','class_school.id');})->get();
-
-        dd(DB::getQueryLog());
-        $school     = SchoolModel::all();
-        $class      = ClassesModel::all();
-        return view('userDetailEdit');
+    public function detail( $id ){
+        $obj                = new \StdClass();
+        $entityIds          = UserModel::with('groups','schools','compensation')->find( $id );
+        $obj->userDetails   = $entityIds->setSchoolInfo()->isStudent();
+        $obj->schools       = SchoolModel::with('classes')->find(1);
+        return view('userDetailEdit',[ 'arResult' => $obj]);
     }
 
 }

@@ -4,9 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Carbon;
 
-class CreateUserCsTable extends Migration
+class CreateCompensationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,12 +14,11 @@ class CreateUserCsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_cs', function (Blueprint $table) {
+        Schema::create('compensations', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('amount');
             $table->integer('u_id');
-            $table->integer('cs_id');
-            $table->integer('s_id');
-            $table->boolean('active')->default(true);
+            $table->integer('type');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
@@ -34,18 +32,22 @@ class CreateUserCsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_cs');
+        Schema::dropIfExists('compensation');
     }
 
     public function defaultRelation(){
-        DB::table('user_cs')->insert([
+        DB::table('compensations')->insert([
+            array(
+                'u_id'      => '1',
+                'amount'    => 800,
+                'type'      => 1
+            ),
             array(
                 'u_id'      => '2',
-                'cs_id'     => 10,
-                's_id'      => 1,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
+                'amount'    => 600,
+                'type'      => 2
             )
         ]);
     }
+
 }

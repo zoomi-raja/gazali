@@ -16,6 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('father_name')->nullable();
             $table->string('login')->unique();
             $table->string('email')->unique();
             $table->char('gender')->default('M');
@@ -23,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->date('dob');
             $table->string('password', 250);
             $table->string('phone')->nullable();
+            $table->string('address')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('verified')->default(false);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

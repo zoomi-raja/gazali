@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
     <title>@yield('title')</title>
-    <style>#loader {
+    <style>
+        #loader {
             transition: all .3s ease-in-out;
             opacity: 1;
             visibility: visible;
@@ -52,7 +53,8 @@
                 transform: scale(1);
                 opacity: 0
             }
-        }</style>
+        }
+    </style>
     <link href="<?=asset('public/css/styles.css')?>" rel="stylesheet">
     @yield('css')
 </head>
