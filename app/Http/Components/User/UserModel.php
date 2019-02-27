@@ -77,34 +77,13 @@ class UserModel extends Authenticatable{
         return $this;
     }
     public function setSchoolInfo(){
-        $schoolRelationIDs = $temp = [];
-        if($this->relations['schools']){
-            foreach ($this->relations['schools'] as $d)
-                $schoolRelationIDs[] = $d->cs_id;
-        }
-        $schoolData = DB::table('class_school')
-            ->join('schools','schools.id','=','class_school.s_id')
-            ->join('classes','classes.id','=','class_school.c_id')
-            ->whereIn('class_school.id',$schoolRelationIDs)
-            ->groupBy('class_school.s_id')
-            ->select(
-                'schools.id',
-                'schools.name',
-                'schools.address',
-                'class_school.s_id',
-                DB::raw('GROUP_CONCAT(classes.id,\',\',classes.name SEPARATOR \'|\' ) as school')
-            )->get();
-        foreach($schoolData as $key => $schoolInfo){
-            $classes    = explode('|',$schoolInfo->school);
-            foreach ($classes as $classInfo){
-                 if( !isset( $schoolData[$key]->classeInfo ) )
-                     $schoolData[$key]->classeInfo  = new Collection();
-                list($classID,$className)   = explode(',',$classInfo);
-                $schoolData[$key]->classeInfo->put($classID,['id' => $classID,'name' =>$className]);
-                unset($classObj);
+        $tempSchoolClassIDs = [];
+        $this->schools->each(function ($item, $key) use(&$tempSchoolClassIDs) {
+            foreach ($item->classes as $classInfo){
+                $tempSchoolClassIDs[$classInfo->pivot->s_id][] = $classInfo->id;
             }
-        }
-        $this->schoolInfo = $schoolData;
+        });
+        $this->schoolIDs = $tempSchoolClassIDs;
         return $this;
     }
 //    public function getSchoolClassDetails(){

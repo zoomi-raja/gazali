@@ -112,8 +112,9 @@
                                     <div class="col-xs-6">
                                         <label for="class"><h4>Classe</h4></label>
                                         <select class="form-control form-control-sm  " multiple data-live-search="true"  id="class" name="class">
-                                            @foreach($arResult->schools->classes as $class )
-                                                <option value="{{$class->id}}" <?=key_exists( $class->id,$arResult->userDetails->schoolInfo[0]->classeInfo->all())?'selected':''; ?>><?=$class->name?></option>
+                                        <?php $arClass = (empty($arResult->userDetails->schoolIDs[1]))?[]:$arResult->userDetails->schoolIDs[1];?>
+                                        @foreach($arResult->schools->classes as $class )
+                                                <option value="{{$class->id}}" <?=in_array( $class->id,$arClass)?'selected':''; ?>><?=$class->name?></option>
                                         @endforeach
                                         </select>
                                     </div>
@@ -123,8 +124,9 @@
                                     <div class="col-xs-6">
                                         <label for="class"><h4>Group</h4></label>
                                         <select class="form-control form-control-sm  disabled" multiple data-live-search="true"  id="class" name="class">
-                                            @foreach($arResult->userDetails->groups as $class )
-                                                <option value="{{$class->id}}"><?=$class->name?></option>
+                                            <?php $arGroups = $arResult->userDetails->groups->pluck('id')->toArray();?>
+                                            @foreach($arResult->groups as $group )
+                                                <option value="{{$group->id}}" <?=in_array( $group->id,$arGroups)?'selected':''; ?>><?=$group->name?></option>
                                             @endforeach
                                         </select>
                                     </div>
