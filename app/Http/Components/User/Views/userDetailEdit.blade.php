@@ -12,7 +12,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="bgc-white bd bdrs-3 p-20 mB-20">
-                    <form class="form" action="##" method="post" id="registrationForm">
+                    <form class="form" action="{{action('User\Controllers\UserEditController@update',$arResult->userDetails->id)}}" method="post" id="registrationForm">
+                        @csrf
                         <div class="row">
                             <div class="col-md-3"><!--left col-->
                                 <div class="text-center">
@@ -123,7 +124,7 @@
                                 <div class="form-group">
                                     <div class="col-xs-6">
                                         <label for="class"><h4>Group</h4></label>
-                                        <select class="form-control form-control-sm  disabled" multiple data-live-search="true"  id="class" name="class">
+                                        <select class="form-control form-control-sm  disabled" multiple data-live-search="true"  id="class" name="group">
                                             <?php $arGroups = $arResult->userDetails->groups->pluck('id')->toArray();?>
                                             @foreach($arResult->groups as $group )
                                                 <option value="{{$group->id}}" <?=in_array( $group->id,$arGroups)?'selected':''; ?>><?=$group->name?></option>

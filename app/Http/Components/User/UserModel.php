@@ -86,12 +86,7 @@ class UserModel extends Authenticatable{
         $this->schoolIDs = $tempSchoolClassIDs;
         return $this;
     }
-//    public function getSchoolClassDetails(){
-//
-//        $data = SchoolModel::with(['classes'=>function($query) use ($schoolRelationIDs){
-//            $query->whereIn('class_school.id',$schoolRelationIDs);
-//        }])->where('id',1)->get();
-//    }
+
     public function scopeGetGroups($query)
     {
         return $query->with("groups")->get();

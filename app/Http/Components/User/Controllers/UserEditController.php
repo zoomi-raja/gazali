@@ -36,4 +36,8 @@ class UserEditController extends Controller
         return view('userDetailEdit',[ 'arResult' => $obj]);
     }
 
+    public function update(){
+        dd($this->request->all());
+    }
+
 }

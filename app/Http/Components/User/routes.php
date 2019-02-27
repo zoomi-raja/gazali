@@ -13,4 +13,5 @@ Route::middleware('auth')->group(function(){
     Route::get('user/{id}', 'User\Controllers\UserController@detail');
 
     Route::get('user/{id}/edit', 'User\Controllers\UserEditController@detail');
+    Route::post('user/{id}/edit', 'User\Controllers\UserEditController@update');
 });
