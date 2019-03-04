@@ -2,25 +2,24 @@
 
 namespace App\Rules;
 
+use App\Http\Components\User\UserModel;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 
 class CompensationRule implements Rule
 {
-    private $userID;
-    private $userType;
+    private $user;
     private $classID;
     private $maxAmount = 0;
 
     /**
      * compensationRule constructor.
-     * @param $userID
-     * @param $userType reflects to get user fees or salary
+     * @param UserModel $userModel
+     * @param $classID
      */
-    public function __construct($userID, $userType, $classID )
+    public function __construct(UserModel $userModel, $classID )
     {
-        $this->userID   = $userID;
-        $this->userType = $userType;
+        $this->user     = $userModel;
         $this->classID  = (is_array($classID))?implode(',',$classID):$classID;
     }
 
@@ -33,7 +32,7 @@ class CompensationRule implements Rule
      */
     public function passes($attribute, $value)
     {
-       if(!$this->classID || $this->userType != 4)
+       if(!$this->classID || !$this->user->isStudent )
            return true;
        $compensationUser = DB::select(DB::raw("SELECT fees FROM class_school where c_id in ($this->classID)  LIMIT 1"));
        if ($compensationUser) {

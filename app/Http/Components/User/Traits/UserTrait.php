@@ -9,13 +9,7 @@
 namespace App\Http\Components\User\Traits;
 
 
-use App\Http\Components\User\UserModel;
-
 Trait UserTrait
 {
-    public function getUserDetail( $id = null ){
-        if(!$id)
-            return false;
-        return UserModel::find($id)->validateUser();
-    }
+
 }

@@ -20,8 +20,11 @@ class UserModel extends Authenticatable{
     use Notifiable;
 
 
-    protected $table     = 'users';
-    public $isStudent    = false;
+    protected $table       = 'users';
+    public $isStudent      = false;
+    public $isSuperAdmin   = false;
+    public $isAdmin        = false;
+    public $isTeacher      = false;
 //    protected $primaryKey   = 'ID';
     /**
      * The attributes that are mass assignable.
@@ -67,15 +70,26 @@ class UserModel extends Authenticatable{
         return $this->hasOne(CompensationModel::class,'u_id');
     }
 
-    public function validateUser(){
-
+    public function setUserType(){
         $this->groups->search(function ( $item, $key ){
-            if($item->key == 'STUDENT'){
-                $this->isStudent = true;
+            switch ($item->key){
+                case 'STUDENT':
+                    $this->isStudent    = true;
+                    break;
+                case 'SUPER_ADMIN':
+                    $this->isSuperAdmin = true;
+                    break;
+                case 'TEACHER':
+                    $this->isTeacher    = true;
+                    break;
+                case 'ADMIN':
+                    $this->isAdmin      = true;
+                    break;
             }
         });
         return $this;
     }
+
     public function setSchoolInfo(){
         $tempSchoolClassIDs = [];
         $this->schools->each(function ($item, $key) use(&$tempSchoolClassIDs) {

@@ -9,14 +9,16 @@
 namespace App\Http\Components\User\Controllers;
 
 use App\Http\Components\Controller;
+use App\Http\Components\User\Repositories\UserRepository;
 use App\Http\Components\User\UserModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    private $user;
-    public function __construct(){
+    private $userRepository;
+    public function __construct( UserRepository $userRepository ){
+        $this->userRepository = $userRepository;
     }
     public function list( UserModel $user ){
         $users = $user->with('groups')->get();
@@ -25,7 +27,10 @@ class UserController extends Controller
 
 
     public function detail( $id ){
-        $user = UserModel::with('groups')->find($id);
+        $userRepo   = $this->userRepository->getUserDetail($id);
+        if($userRepo) {
+            $user   = $userRepo->getCompensationInfo()->getSchoolInfo()->getUserData();
+        }
         return view('userDetail',compact('user'));
     }
 }

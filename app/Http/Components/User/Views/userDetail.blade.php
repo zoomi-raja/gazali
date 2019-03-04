@@ -18,8 +18,13 @@
                         <h5>
                             {{$user->name}}
                         </h5>
-                        <h6 class="mt-4">
-                            Student
+                        <h6 class="mt-2">
+                            <?php $gname = implode(',',$user->groups->pluck('name')->toArray());?>
+                            {{$gname}}
+                        </h6>
+                        <h6 class="mt-2">
+                            <?php $cname = implode(',',$user->affiliation[0]->classes->pluck('name')->toArray());?>
+                            {{$cname}}
                         </h6>
                         <ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
                             <li class="nav-item">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Components\User\Repositories\UserRepository;
 use App\Http\Components\User\Traits\UserTrait;
 use App\Rules\ClassRule;
 use App\Rules\CompensationRule;
@@ -13,6 +14,13 @@ class UpdateUser extends FormRequest
 
     public $user;
     public $userType;
+    public $userRepository;
+
+    function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -20,8 +28,7 @@ class UpdateUser extends FormRequest
      */
     public function authorize()
     {
-        $this->user     = $this->getUserDetail($this->route('id'));
-        $this->userType = ($this->user->isStudent)?4:1;
+        $this->user     = $this->userRepository->getUserDetail($this->route('id'))->getUserData();
         return true;
     }
 
@@ -40,7 +47,7 @@ class UpdateUser extends FormRequest
             'dob'       => 'nullable|date',
             'gender'    => 'in:M,F',
             'class'     => ['required','exists:classes,id', new ClassRule( $this->user )],
-            'fees'      => ['required',new CompensationRule( $this->route('id'), $this->userType, $this->request->get('class') )],//todo 1 is for fees and 2 for salary
+            'fees'      => ['required',new CompensationRule( $this->user, $this->request->get('class') )],//todo 1 is for fees and 2 for salary
             'school'    => 'required|exists:schools,id',
             'group'     => 'required|exists:groups,id',
             'address'   => 'nullable'
