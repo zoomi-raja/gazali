@@ -20,4 +20,11 @@ class CompensationModel extends Model {
 
 
     protected $table        = 'compensations';
+
+
+    public function user()
+    {
+        return $this->belongsTo(UserModel::class,'u_id');
+    }
+
 }

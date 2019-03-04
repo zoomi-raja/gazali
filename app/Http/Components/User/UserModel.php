@@ -29,7 +29,7 @@ class UserModel extends Authenticatable{
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'phone', 'gender', 'password', 'login', 'dob'
+        'name', 'email', 'phone', 'gender', 'password', 'login', 'dob', 'address'
     ];
 
     /**
@@ -67,7 +67,7 @@ class UserModel extends Authenticatable{
         return $this->hasOne(CompensationModel::class,'u_id');
     }
 
-    public function isStudent(){
+    public function validateUser(){
 
         $this->groups->search(function ( $item, $key ){
             if($item->key == 'STUDENT'){

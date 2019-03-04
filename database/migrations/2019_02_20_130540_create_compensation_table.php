@@ -32,7 +32,7 @@ class CreateCompensationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('compensation');
+        Schema::dropIfExists('compensationRule');
     }
 
     public function defaultRelation(){

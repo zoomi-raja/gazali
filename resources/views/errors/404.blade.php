@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
     <title>404</title>
     <link href="<?=asset('public/css/styles.css')?>" rel="stylesheet">
+    <script>
+        var baseUrl = "{{URL('')}}";
+    </script>
 </head>
     <body class="app">
         <div class="pos-a t-0 l-0 bgc-white w-100 h-100 d-f fxd-r fxw-w ai-c jc-c pos-r p-30">

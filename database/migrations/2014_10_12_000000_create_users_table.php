@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->string('address')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('verified')->default(false);
+            $table->integer('modified_by')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('last_login')->nullable();

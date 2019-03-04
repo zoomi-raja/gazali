@@ -8,6 +8,20 @@
     <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    @if(session()->has('success'))
+        <div class="alert alert-success">
+            {{ session()->get('success') }}
+        </div>
+    @endif
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -25,7 +39,7 @@
                                     <div class="col-xs-6">
                                         <div class="form-check">
                                             <label class="form-check-label"><h4>Active</h4></label>
-                                                <input class="ml-3" type="checkbox" name="active" id="active" checked="<?=($arResult->userDetails->active == 'Y')?'checked':''?>">
+                                                <input class="ml-3" type="checkbox" name="active" id="active" value="1" checked="<?=($arResult->userDetails->active == 'Y')?'checked':''?>">
                                         </div>
                                     </div>
                                 </div>
@@ -112,7 +126,7 @@
                                 <div class="form-group">
                                     <div class="col-xs-6">
                                         <label for="class"><h4>Classe</h4></label>
-                                        <select class="form-control form-control-sm  " multiple data-live-search="true"  id="class" name="class">
+                                        <select class="form-control form-control-sm  " multiple data-live-search="true"  id="class" <?=($arResult->userDetails->isStudent)?'name="class"':'name="class[]" multiple '?>>
                                         <?php $arClass = (empty($arResult->userDetails->schoolIDs[1]))?[]:$arResult->userDetails->schoolIDs[1];?>
                                         @foreach($arResult->schools->classes as $class )
                                                 <option value="{{$class->id}}" <?=in_array( $class->id,$arClass)?'selected':''; ?>><?=$class->name?></option>
@@ -124,7 +138,7 @@
                                 <div class="form-group">
                                     <div class="col-xs-6">
                                         <label for="class"><h4>Group</h4></label>
-                                        <select class="form-control form-control-sm  disabled" multiple data-live-search="true"  id="class" name="group">
+                                        <select class="form-control form-control-sm  disabled" multiple data-live-search="true"  id="class" name="group[]" multiple>
                                             <?php $arGroups = $arResult->userDetails->groups->pluck('id')->toArray();?>
                                             @foreach($arResult->groups as $group )
                                                 <option value="{{$group->id}}" <?=in_array( $group->id,$arGroups)?'selected':''; ?>><?=$group->name?></option>
