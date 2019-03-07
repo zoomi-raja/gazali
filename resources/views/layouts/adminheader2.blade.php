@@ -55,7 +55,9 @@
             }
         }
     </style>
-    <link href="<?=asset('public/css/styles.css')?>" rel="stylesheet">
+    <link href="<?=asset('public/css/app.css')?>" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     @yield('css')
 </head>
 <body class="app">
