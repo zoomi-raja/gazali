@@ -54,10 +54,11 @@ if (! function_exists('get_component')) {
         */
         $mapPaths = ['login' => 'auth', 'register' => 'auth' ];
 
-        $path = explode('/', app()->make('request')->path());
-        if(isset($mapPaths[$path[0]]))
-            return $mapPaths[$path[0]];
-        return $path[0];
+        $pathArr    = explode('/', app()->make('request')->path());
+        $components = ($pathArr[0] == 'api' )?$pathArr[1]:$pathArr[0];
+        if(isset($mapPaths[$components]))
+            return $mapPaths[$components];
+        return $components;
     }
 }
 
@@ -68,5 +69,15 @@ if (! function_exists('get_resource_path')) {
             return false;
         $path = asset("app/Http/Components/".ucfirst(get_component())."/Views/{$resourceName}/style.css");
         return $path;
+    }
+}
+
+if(!function_exists('tokenizer')) {
+    /**
+     * @return mixed
+     */
+    function tokenizer()
+    {
+        return app()->make('JwtTokenizer');
     }
 }

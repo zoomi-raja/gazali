@@ -52,13 +52,15 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         if (strpos(php_sapi_name(), 'cli') !== false) {
-            //todo here can add all route files in loop
-            $routeFiles[]    = $this->namespace.'\Auth\routes.php';
-            $routeFiles[]    = $this->namespace.'\User\routes.php';
-            $routeFiles[]    = $this->namespace.'\Group\routes.php';
+            $components = array_filter(glob($this->namespace.'/*'), 'is_dir');
+            foreach( $components as $component ){
+                if(file_exists($component.'/Routes\web.php')){
+                    $routeFiles[] = $component.'/Routes\web.php';
+                }
+            }
         }else{
             $path           = get_component();
-            $routeFile      = $this->namespace.'\\'.$path.'\routes.php';
+            $routeFile      = $this->namespace.'\\'.$path.'\Routes\web.php';
             $routeFiles[]   = file_exists($routeFile)?$routeFile:'routes/web.php';
         }
         $routeGenerator = Route::middleware('web')
@@ -77,9 +79,22 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
+        if (strpos(php_sapi_name(), 'cli') !== false) {
+            $components = array_filter(glob($this->namespace.'/*'), 'is_dir');
+            foreach( $components as $component ){
+                if(file_exists($component.'/Routes\api.php')){
+                    $routeFiles[] = $component.'/Routes\api.php';
+                }
+            }
+        }else{
+            $path           = get_component();
+            $routeFile      = $this->namespace.'\\'.$path.'\Routes\api.php';
+            $routeFiles[]   = file_exists($routeFile)?$routeFile:'routes/api.php';
+        }
+        $routeGenerator = Route::middleware('api')
+            ->namespace($this->namespace);
+        foreach ($routeFiles as $route){
+            $routeGenerator->group(base_path($route));
+        }
     }
 }

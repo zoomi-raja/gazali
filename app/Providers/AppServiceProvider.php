@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\PrepareResponseService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -24,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton('PrepareResponseService',function(){
+            return new PrepareResponseService();
+        });
     }
 }

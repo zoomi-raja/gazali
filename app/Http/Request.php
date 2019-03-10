@@ -66,4 +66,10 @@ class Request extends  BaseRequest
                 $this->filters->push($filters);
         }
     }
+
+    public function wantsJson(){
+        if(strpos($this->path(),'api') !== false)
+            return true;
+    }
+
 }

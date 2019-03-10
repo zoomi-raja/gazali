@@ -21,13 +21,6 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/';
-
-    /**
      * Create a new controller instance.
      *
      * @return void
@@ -40,5 +33,15 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         return view('login');
+    }
+    public function showFields()
+    {
+        return response()->json([ 'fields' => ['email','password', 'remember_token'] ],200);
+    }
+
+    public function sendLoginResponse($request){
+        return response()->json([
+            'token' => tokenizer()->jwt($this->guard()->user())
+        ], 200);
     }
 }

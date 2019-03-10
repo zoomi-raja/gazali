@@ -7,7 +7,6 @@
  */
 Route::group(['middleware' => 'guest'], function () {
     Route::get('login', 'Auth\Controllers\LoginController@showLoginForm');
-    Route::post('login', 'Auth\Controllers\LoginController@login');
     Route::get('register', 'Auth\Controllers\RegisterController@showRegistrationForm');
     Route::post('register', 'Auth\Controllers\RegisterController@registerUser');
 });
