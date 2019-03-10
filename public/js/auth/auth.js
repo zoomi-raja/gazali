@@ -25516,16 +25516,27 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 
 
 
-function validate(email, password) {
-  return {
-    email: email.length === 0,
-    password: password.length === 0
-  };
-}
+
+var fromValid = function fromValid(_ref) {
+  var formErrors = _ref.formErrors,
+      rest = _objectWithoutProperties(_ref, ["formErrors"]);
+
+  var valid = true;
+  Object.values(formErrors).forEach(function (val) {
+    return val.length > 0 && (valid = false);
+  });
+  Object.values(rest).forEach(function (val) {
+    return val.length <= 0 && (valid = false);
+  });
+  return valid;
+};
 
 var Auth =
 /*#__PURE__*/
@@ -25541,9 +25552,9 @@ function (_React$Component) {
     _this.state = {
       email: '',
       password: '',
-      touched: {
-        email: false,
-        password: false
+      formErrors: {
+        email: '',
+        password: ''
       }
     };
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -25557,50 +25568,59 @@ function (_React$Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit(event) {
+      var _this2 = this;
+
       event.preventDefault();
-
-      if (!this.canBeSubmitted()) {
-        return;
-      }
-
       var userCredentials = {
         email: this.state.email,
         password: this.state.password
       };
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://localhost/gazali" + '/api/login', userCredentials).then(function (response) {
-        console.log(response.data);
-      }).catch(function (reason) {
-        console.log(response.data);
-      });
-    }
-  }, {
-    key: "canBeSubmitted",
-    value: function canBeSubmitted() {
-      var errors = validate(this.state.email, this.state.password);
-      var isDisabled = Object.keys(errors).some(function (x) {
-        errors[x];
-        console.log(errors[x]);
-      });
-      return !isDisabled;
+
+      if (fromValid(this.state)) {
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://localhost/gazali" + '/api/login', userCredentials).then(function (response) {
+          if (response.data.STATUS.CODE != 200) {
+            var errors = response.data.OUTPUT.DATA.errors;
+            var formErrors = _this2.state.formErrors;
+
+            for (var property in errors) {
+              formErrors[property] = errors[property][0];
+            }
+
+            _this2.setState({
+              formErrors: formErrors
+            });
+          }
+        }).catch(function (reason) {
+          console.log(reason);
+        });
+      }
     }
   }, {
     key: "handleChange",
     value: function handleChange(event) {
-      this.setState(_defineProperty({}, event.target.name, event.target.value));
+      var _event$target = event.target,
+          name = _event$target.name,
+          value = _event$target.value;
+      var formErrors = this.state.formErrors;
+
+      switch (name) {
+        case 'email':
+          formErrors.email = value.length < 3 ? "minimum 3 characters required" : "";
+          break;
+
+        case 'password':
+          formErrors.password = value.length < 6 ? "minimum length should be 6" : "";
+          break;
+      }
+
+      this.setState(_defineProperty({
+        formErrors: formErrors
+      }, name, value));
     }
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
-
-      var errors = validate(this.state.email, this.state.password);
-
-      var shouldMarkError = function shouldMarkError(field) {
-        var hasError = errors[field];
-        var shouldShow = _this2.state.touched[field];
-        return hasError ? shouldShow : false;
-      };
-
+      var formErrors = this.state.formErrors;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         onSubmit: this.handleSubmit,
         method: "post"
@@ -25611,22 +25631,26 @@ function (_React$Component) {
       }, "Email"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "email",
         name: "email",
-        className: shouldMarkError("email") ? "form-control is-invalid" : "form-control",
+        className: "form-control " + (formErrors.email.length ? 'is-invalid' : ''),
         placeholder: "Registered Email",
         value: this.state.email,
         onChange: this.handleChange
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }), formErrors.email.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "invalid-feedback"
+      }, formErrors.email)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         className: "text-normal text-dark"
       }, "Password"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "password",
         name: "password",
-        className: shouldMarkError("password") ? "form-control is-invalid" : "form-control",
+        className: "form-control " + (formErrors.password.length ? 'is-invalid' : ''),
         placeholder: "Password",
         value: this.state.password,
         onChange: this.handleChange
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }), formErrors.password.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "invalid-feedback"
+      }, formErrors.password)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "peers ai-c jc-sb fxw-nw"
@@ -25647,7 +25671,8 @@ function (_React$Component) {
       }, "Remember Me")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "peer"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "btn btn-primary"
+        className: "btn btn-primary",
+        type: "submit"
       }, "Login")))));
     }
   }]);
@@ -25672,7 +25697,7 @@ if (document.getElementById('loginForm')) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\xamp\htdocs\gazali\resources\js\Auth\auth.js */"./resources/js/Auth/auth.js");
+module.exports = __webpack_require__(/*! D:\xampp\htdocs\gazali\resources\js\Auth\auth.js */"./resources/js/Auth/auth.js");
 
 
 /***/ })
