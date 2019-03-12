@@ -1,19 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
+import API from '../utilities/api';
+import api_url from '../utilities/apiurl';
+import {guestAllowed,setToken} from './authfunction'
 
-
-const fromValid = ({formErrors, ...rest}) => {
-    let valid = true;
-
-    Object.values(formErrors).forEach( val => val.length > 0 && (valid = false) )
-    Object.values(rest).forEach( val => val.length <= 0 && (valid = false) )
-    return valid;
-}
 export default class Auth extends React.Component{
     constructor(){
         super();
         this.state = {
+            loading: false,
             email: '',
             password:'',
             formErrors: {
@@ -22,8 +17,24 @@ export default class Auth extends React.Component{
             }};
         this.handleSubmit   = this.handleSubmit.bind(this);
         this.handleChange   = this.handleChange.bind(this);
+        this.fromValid      = this.fromValid.bind(this);
+        this.handleClick    = this.handleClick.bind(this);
     }
     componentDidMount() {
+        guestAllowed();
+    }
+    fromValid ({formErrors, ...rest}) {
+        let valid = true;
+
+        Object.keys(rest).forEach((field) => {
+            if(rest[field].length <= 0){
+                valid = false;
+                let event = {target:{ name:field , value : '' }};
+                this.handleChange(event);
+            }
+        });
+        Object.values(formErrors).forEach( val => val.length > 0 && (valid = false) )
+        return valid;
     }
 
     handleSubmit( event ){
@@ -32,19 +43,23 @@ export default class Auth extends React.Component{
             email : this.state.email,
             password:this.state.password
         }
-        if(fromValid(this.state)) {
-            axios.post(process.env.MIX_APP_URL + '/api/login', userCredentials)
+        if(this.fromValid(this.state)) {
+            let apiToken = new API(api_url('login'));
+            apiToken.endpoints.create(userCredentials)
                 .then((response) => {
                     if(response.data.STATUS.CODE != 200 ){
                         let errors      = response.data.OUTPUT.DATA.errors;
                         let formErrors  = this.state.formErrors;
-                        for (var property in errors) {
+                        for (let property in errors) {
                             formErrors[property] = errors[property][0];
                         }
-                        this.setState({formErrors});
+                        this.setState({formErrors,loading:false});
+                    }else{
+                        setToken(response.data.OUTPUT.DATA.token);
                     }
                 })
                 .catch((reason) => {
+                    this.setState({loading:false});
                     console.log(reason);
                 });
         }
@@ -56,18 +71,29 @@ export default class Auth extends React.Component{
             case 'email':
                 formErrors.email =
                     value.length < 3
-                    ? "minimum 3 characters required"
-                    :"";
+                        ? "minimum 3 characters required"
+                        :"";
                 break;
             case 'password':
                 formErrors.password =
                     value.length < 6
-                    ? "minimum length should be 6"
-                    : "";
+                        ? "minimum length should be 6"
+                        : "";
+                formErrors.email =
+                    this.state.email.length > 3
+                        ? ""
+                        :formErrors.email;
                 break;
         }
         this.setState({formErrors,[name]:value});
     }
+
+    handleClick(){
+        this.setState({
+            loading: true
+        })
+    };
+
     render(){
         const { formErrors } = this.state;
         return (
@@ -101,7 +127,13 @@ export default class Auth extends React.Component{
                             </div>
                         </div>
                         <div className="peer">
-                         <button className="btn btn-primary" type="submit">Login</button>
+                            <button onClick={this.handleClick} className="btn btn-primary" type="submit">
+                                {
+                                    this.state.loading &&
+                                    <i className='fa fa-circle-o-notch fa-spin'></i>
+                                }
+                                &nbsp;Login
+                            </button>
                         </div>
                     </div>
                 </div>

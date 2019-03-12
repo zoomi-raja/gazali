@@ -1,10 +1,7 @@
 <?php
-
 namespace App\Providers;
-
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-
 class RouteServiceProvider extends ServiceProvider
 {
     /**
@@ -15,7 +12,6 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     protected $namespace = 'App\Http\Components';
-
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -24,10 +20,8 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-
         parent::boot();
     }
-
     /**
      * Define the routes for the application.
      *
@@ -36,12 +30,9 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
         $this->mapApiRoutes();
-
         $this->mapWebRoutes();
-
         //
     }
-
     /**
      * Define the "web" routes for the application.
      *
@@ -51,8 +42,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
+        $routeFiles = [];
         if (strpos(php_sapi_name(), 'cli') !== false) {
-            $components = array_filter(glob($this->namespace.'/*'), 'is_dir');
+            $components = array_filter(glob($this->namespace.'/admin/*'), 'is_dir');
             foreach( $components as $component ){
                 if(file_exists($component.'/Routes\web.php')){
                     $routeFiles[] = $component.'/Routes\web.php';
@@ -60,16 +52,15 @@ class RouteServiceProvider extends ServiceProvider
             }
         }else{
             $path           = get_component();
-            $routeFile      = $this->namespace.'\\'.$path.'\Routes\web.php';
+            $routeFile      = $this->namespace.'\\'.$path['component'].'\Routes\web.php';
             $routeFiles[]   = file_exists($routeFile)?$routeFile:'routes/web.php';
         }
         $routeGenerator = Route::middleware('web')
-             ->namespace($this->namespace);
+            ->namespace($this->namespace);
         foreach ($routeFiles as $route){
             $routeGenerator->group(base_path($route));
         }
     }
-
     /**
      * Define the "api" routes for the application.
      *
@@ -79,8 +70,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
+        $routeFiles = [];
         if (strpos(php_sapi_name(), 'cli') !== false) {
-            $components = array_filter(glob($this->namespace.'/*'), 'is_dir');
+            $components = array_filter(glob($this->namespace.'/admin/*'), 'is_dir');
             foreach( $components as $component ){
                 if(file_exists($component.'/Routes\api.php')){
                     $routeFiles[] = $component.'/Routes\api.php';
@@ -88,7 +80,7 @@ class RouteServiceProvider extends ServiceProvider
             }
         }else{
             $path           = get_component();
-            $routeFile      = $this->namespace.'\\'.$path.'\Routes\api.php';
+            $routeFile      = $this->namespace.'\\'.$path['component'].'\Routes\api.php';
             $routeFiles[]   = file_exists($routeFile)?$routeFile:'routes/api.php';
         }
         $routeGenerator = Route::middleware('api')

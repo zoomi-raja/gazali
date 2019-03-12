@@ -16,10 +16,7 @@ class jwtMiddleware
     {
         $token  = $request->header('authorization');
         $resp   = tokenizer()->validateJwtToken($token);
-        try {
-        } catch (Exception $e) {
-            dd($e->getMessage());
-        }
+        auth()->loginUsingId($resp->sub);
         return $next($request);
     }
 }

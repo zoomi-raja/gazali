@@ -16,7 +16,7 @@ if (! function_exists('get_component_resource')) {
     {
         $viewFile       = '';
         try {
-            $path       = get_component();
+            $path       = get_component()['component'];
             $viewFile   = 'App\Http\Components\\' . $path . '\Views\\';
         }catch (ReflectionException $exception) {
             // Output expected ReflectionException.
@@ -28,7 +28,6 @@ if (! function_exists('get_component_resource')) {
         return $viewFile;
     }
 }
-
 if (! function_exists('p')) {
     function p($printData, $haltExec = false)
     {
@@ -39,7 +38,6 @@ if (! function_exists('p')) {
         } else {
             echo $printData;
         }
-
         if ($haltExec) {
             die();
         }
@@ -49,29 +47,37 @@ if (! function_exists('get_component')) {
     function get_component()
     {
         /**
-            *This array just to map paths which are not any resource custom binding
-            *$var array;
-        */
+         *This array just to map paths which are not any resource custom binding
+         *$var array;
+         */
         $mapPaths = ['login' => 'auth', 'register' => 'auth' ];
-
-        $pathArr    = explode('/', app()->make('request')->path());
-        $components = ($pathArr[0] == 'api' )?$pathArr[1]:$pathArr[0];
-        if(isset($mapPaths[$components]))
-            return $mapPaths[$components];
-        return $components;
+        $pathArr        = explode('/', (app()->make('request')->path()));
+        $componentInfo  = ['type' => '','component' => '' ];
+        array_walk($pathArr,function ($value, $key ) use(&$componentInfo,$mapPaths) {
+            if($value == 'admin') {//todo can set custom path using env variable
+                $componentInfo['component'] .= 'admin';
+                $componentInfo['type']      = 'admin';
+            }else {
+                $value                      = isset($mapPaths[$value])?$mapPaths[$value]:$value;
+                if($value == 'api'){
+                    $componentInfo['type']  .= '/api';
+                }else{
+                    $componentInfo['component'] .= '/' . $value;
+                }
+            }
+        });
+        return $componentInfo;
     }
 }
-
 if (! function_exists('get_resource_path')) {
     function get_resource_path( $resourceName = null )
     {
         if(!$resourceName)
             return false;
-        $path = asset("app/Http/Components/".ucfirst(get_component())."/Views/{$resourceName}/style.css");
+        $path = asset("app/Http/Components/".ucfirst(get_component()['component'])."/Views/{$resourceName}/style.css");
         return $path;
     }
 }
-
 if(!function_exists('tokenizer')) {
     /**
      * @return mixed

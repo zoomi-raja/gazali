@@ -46,7 +46,7 @@ class JwtTokenizer{
             } catch(UnexpectedValueException $e) {
                 throw new AuthorizationException('An error while decoding token.',403);
             }
-            return User::find($credentials->sub);
+            return $credentials;
         }
         throw new AuthorizationException('Auth token is missing.',403);
     }

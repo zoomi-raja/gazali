@@ -4,10 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
     <title>404</title>
-    <link href="<?=asset('public/css/styles.css')?>" rel="stylesheet">
-    <script>
-        var baseUrl = "{{URL('')}}";
-    </script>
+    <link href="<?=asset('public/css/app.css')?>" rel="stylesheet">=
 </head>
     <body class="app">
         <div class="pos-a t-0 l-0 bgc-white w-100 h-100 d-f fxd-r fxw-w ai-c jc-c pos-r p-30">
@@ -22,6 +19,4 @@
             </div>
         </div>
     </body>
-    <script type="text/javascript" src="<?=asset('public/js/vendor.js')?>"></script>
-    <script type="text/javascript" src="<?=asset('public/js/bundle.js')?>"></script>
 </html>

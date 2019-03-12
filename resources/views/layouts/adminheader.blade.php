@@ -5,8 +5,5 @@
     <style></style>
     <link href="<?=asset('public/css/app.css')?>" rel="stylesheet">
     @yield('css')
-    <script>
-        var baseUrl = "{{URL('')}}";
-    </script>
 </head>
 <body>
