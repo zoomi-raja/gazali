@@ -13,4 +13,4 @@ import './email';
 import './fullcalendar';
 import './googleMaps';
 import './utils';
-// import './vectorMaps';
+import './vectorMaps';

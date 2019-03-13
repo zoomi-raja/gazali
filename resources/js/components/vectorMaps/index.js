@@ -1,7 +1,6 @@
 import * as $ from 'jquery';
 import 'jvectormap';
 import 'jvectormap/jquery-jvectormap.css';
-import './jquery-jvectormap-min.js';
 import './jquery-jvectormap-world-mill.js';
 import { debounce } from 'lodash';
 
