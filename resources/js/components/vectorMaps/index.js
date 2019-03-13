@@ -4,7 +4,7 @@ import 'jvectormap/jquery-jvectormap.css';
 import './jquery-jvectormap-world-mill.js';
 import { debounce } from 'lodash';
 
-export default (function () {
+const vectorMap = () => {
   const vectorMapInit = () => {
     if ($('#world-map-marker').length > 0) {
       // This is a hack, as the .empty() did not do the work
@@ -90,5 +90,6 @@ export default (function () {
   };
 
   vectorMapInit();
-  $(window).resize(debounce(vectorMapInit, 150));
-})();
+  // $(window).resize(debounce(vectorMapInit, 150)); todo need to fix
+}
+export default vectorMap

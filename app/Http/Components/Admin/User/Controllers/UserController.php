@@ -6,11 +6,11 @@
  * Time: 10:04 AM
  */
 
-namespace App\Http\Components\admin\User\Controllers;
+namespace App\Http\Components\Admin\User\Controllers;
 
 use App\Http\Components\Controller;
-use App\Http\Components\admin\User\Repositories\UserRepository;
-use App\Http\Components\admin\User\UserModel;
+use App\Http\Components\Admin\User\Repositories\UserRepository;
+use App\Http\Components\Admin\User\UserModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 

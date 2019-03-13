@@ -6,13 +6,13 @@
  * Time: 10:17 AM
  */
 
-namespace App\Http\Components\admin\User\Repositories;
+namespace App\Http\Components\Admin\User\Repositories;
 
 
-use App\Http\Components\School\SchoolModel;
-use App\Http\Components\User\CompensationModel;
-use App\Http\Components\User\UserClassModel;
-use App\Http\Components\User\UserModel;
+use App\Http\Components\Admin\School\SchoolModel;
+use App\Http\Components\Admin\User\CompensationModel;
+use App\Http\Components\Admin\User\UserClassModel;
+use App\Http\Components\Admin\User\UserModel;
 use Illuminate\Support\Facades\DB;
 
 class UserRepository

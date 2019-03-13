@@ -6,12 +6,12 @@
  * Time: 11:22 AM
  */
 
-namespace App\Http\Components\admin\User\Controllers;
+namespace App\Http\Components\Admin\User\Controllers;
 
 use App\Http\Components\Controller;
-use App\Http\Components\admin\Group\GroupModel;
-use App\Http\Components\admin\School\SchoolModel;
-use App\Http\Components\admin\User\Repositories\UserRepository;
+use App\Http\Components\Admin\Group\GroupModel;
+use App\Http\Components\Admin\School\SchoolModel;
+use App\Http\Components\Admin\User\Repositories\UserRepository;
 use App\Http\Requests\UpdateUser;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;

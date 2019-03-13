@@ -6,11 +6,11 @@
  * Time: 9:10 AM
  */
 
-namespace App\Http\Components\admin\User\Controllers;
+namespace App\Http\Components\Admin\User\Controllers;
 
 
 use App\Http\Components\Controller;
-use App\Http\Components\admin\User\UserModel;
+use App\Http\Components\Admin\User\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;

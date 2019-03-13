@@ -14,7 +14,7 @@ Route::get('/', function () {
     return 'web site html';
 });
 Route::get('/admin', function () {
-    return redirect('/admin/dashboard');
+    return view('dashboard');
 });
 Route::get('/admin/dashboard', function () {
     return view('welcome');

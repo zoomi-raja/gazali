@@ -20,7 +20,6 @@ export function guestAllowed() {
 }
 
 export function guestNotAllowed() {
-    console.log(checkAuth());
     if(!checkAuth()){
         window.location.href = api_url('login_pg').url;
         console.log(api_url('login_pg'));
