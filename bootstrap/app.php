@@ -41,6 +41,10 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+$app->singleton(
+    'JwtTokenizer',
+    App\Services\JwtTokenizer::class
+);
 /*
 |--------------------------------------------------------------------------
 | Return The Application

@@ -12,4 +12,7 @@ const mix = require('laravel-mix');
  */
 
 mix.react('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+    .react('resources/js/Auth/auth.js','public/js/auth/')
+   .sass('resources/sass/app.scss', 'public/css').options({
+        processCssUrls: false
+    });

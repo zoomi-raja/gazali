@@ -14,23 +14,24 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('ID');
-            $table->string('NAME');
-            $table->string('LOGIN')->unique();
-            $table->string('EMAIL')->unique();
-            $table->char('GENDER')->default('M');
-            $table->string('PHOTO')->nullable();
-            $table->date('DOB');
-            $table->string('PASSWORD', 250);
-            $table->string('PHONE')->nullable();
-            $table->boolean('ACTIVE')->default(true);
-            $table->boolean('VERIFIED')->default(false);
-            $table->boolean('REMEMBER_TOKEN')->default(false);
-            $table->dateTime('CREATED_AT');
-            $table->dateTime('UPDATED_AT');
-            $table->dateTime('LAST_LOGIN')->nullable();
+            $table->increments('id');
+            $table->string('name');
+            $table->string('father_name')->nullable();
+            $table->string('login')->unique();
+            $table->string('email')->unique();
+            $table->char('gender')->default('M');
+            $table->string('photo')->nullable();
+            $table->date('dob');
+            $table->string('password', 250);
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->boolean('active')->default(true);
+            $table->boolean('verified')->default(false);
+            $table->integer('modified_by')->nullable();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->dateTime('last_login')->nullable();
             $table->rememberToken();
-//            $table->timestamps();
         });
     }
 

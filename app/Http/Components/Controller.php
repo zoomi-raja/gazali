@@ -10,4 +10,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    protected function makeResponse( $template, $data = null )
+    {
+        if (app('request')->ajax()) {
+            return response()->json($data);
+        }
+
+        return view($template, $data);
+    }
 }
