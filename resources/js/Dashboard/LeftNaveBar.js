@@ -4,8 +4,6 @@ import api_url from '../utilities/apiurl';
 
 class LeftNaveBar extends React.Component {
     render(){
-        console.log(this.props);
-
         return (
             <div>
             <div className="sidebar">
@@ -16,7 +14,7 @@ class LeftNaveBar extends React.Component {
                                 <div className="peers ai-c fxw-nw">
                                     <div className="peer">
                                         <div className="logo">
-                                            <img src="public/assets/static/images/logo.png" alt="" />
+                                            <img src={process.env.MIX_APP_URL+"/public/assets/static/images/logo.png"} alt="" />
                                         </div>
                                     </div>
                                     <div className="peer peer-greed"><h5 className="lh-1 mB-0 logo-text">Adminator</h5>

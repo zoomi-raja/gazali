@@ -9,7 +9,7 @@ namespace App\Http\Components\Admin\User;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Admin\Auth\MustVerifyEmail;
-use App\Http\Components\Group\GroupModel;
+use App\Http\Components\Admin\Group\GroupModel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -58,7 +58,7 @@ class UserModel extends Authenticatable{
         return $this->belongsToMany(GroupModel::class, 'group_user', 'u_id', 'g_id');
     }
 
-    public function schools(){
+    public function assignedSchoolClassRelation(){
         return $this->hasMany(UserClassModel::class,'u_id');
     }
 

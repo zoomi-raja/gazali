@@ -54,14 +54,14 @@ if (! function_exists('get_component')) {
         $pathArr        = explode('/', (app()->make('request')->path()));
         $componentInfo  = ['type' => '','component' => '' ];
         array_walk($pathArr,function ($value, $key ) use(&$componentInfo,$mapPaths) {
-            if($value == 'admin') {//todo can set custom path using env variable
+            if($value == 'admin' && $key == 0 ) {//todo can set custom path using env variable
                 $componentInfo['component'] .= 'admin';
                 $componentInfo['type']      = 'admin';
             }else {
                 $value                      = isset($mapPaths[$value])?$mapPaths[$value]:$value;
-                if($value == 'api'){
+                if( $value == 'api' && $key == 1 ){
                     $componentInfo['type']  .= '/api';
-                }else{
+                }elseif($key <= 2){
                     $componentInfo['component'] .= '/' . $value;
                 }
             }

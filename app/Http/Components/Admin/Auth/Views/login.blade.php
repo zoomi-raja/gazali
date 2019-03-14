@@ -5,20 +5,6 @@
     <link rel="stylesheet" type="text/css" href="{{ get_resource_path('css') }}">
 @endsection
 @section('content')
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        @if(session()->has('alert-success'))
-            <div class="alert alert-success">
-                {{ session()->get('alert-success') }}
-            </div>
-        @endif
 <div id="loader">
     <div class="spinner"></div>
 </div>
@@ -45,5 +31,8 @@
         <div id="loginForm"></div>
     </div>
 </div>
-<script type="text/javascript" src="<?=asset('public/js/auth/auth.js')?>"></script>
+@endsection
+@section('js')
+    @parent
+    <script type="text/javascript" src="<?=asset('public/js/auth/auth.js')?>"></script>
 @endsection

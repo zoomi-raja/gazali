@@ -21,8 +21,7 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
     public function list( UserModel $user ){
-        $users = $user->with('groups')->get();
-        return view('userList',compact('users'));
+        return $this->userRepository->getSchoolUsers();
     }
 
 
@@ -32,6 +31,14 @@ class UserController extends Controller
             $user   = $userRepo->getCompensationInfo()->getSchoolInfo()->getUserData();
         }
         return view('userDetail',compact('user'));
+    }
+
+    public function test(){
+        DB::enableQueryLog();
+        $user = UserModel::find(1);
+//        $data = UserModel::whereHas('assignedSchools.classes')->get();
+        dd(DB::getQueryLog());
+        die('here');
     }
 }
 

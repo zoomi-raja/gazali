@@ -21,6 +21,52 @@ class UserRepository
     function  __construct( UserModel $userModel){
         $this->userModel = $userModel;
     }
+    public function prepareRelationQuery(){
+        return  DB::table('users')
+            ->select('users.id','users.name','users.email','users.gender','users.dob','users.active')
+            ->selectRaw('GROUP_CONCAT( DISTINCT CONCAT( groups.name,\'#\',groups.id )   SEPARATOR \'||\') as groups')
+            ->selectRaw(' CONCAT ( CONCAT(schools.name,\'##\',schools.id),\'---\',
+                GROUP_CONCAT(
+                    DISTINCT CONCAT(
+                        classes.name,\'#\',classes.id
+                    )
+                    SEPARATOR \'||\'
+                )
+            )
+                as schools')
+            ->join('group_user','group_user.u_id','=','users.id')
+            ->join('groups','groups.id','=','group_user.g_id')
+            ->join('user_cs','user_cs.u_id','=','users.id')
+            ->join('class_school','class_school.id','=','user_cs.cs_id')
+            ->join('schools','schools.id','=','class_school.s_id')
+            ->join('classes','classes.id','=','class_school.c_id')
+            ->groupBy('users.id')->groupBy('schools.id');
+    }
+    public function getSchoolUsers(){
+        $users = $this->prepareRelationQuery()->where('schools.id','=','1')->get();///todo one time record of one schools only so
+        $users->each(function(&$item, $key ){
+            $groupsArr              = explode('||',$item->groups);
+            $schoolsArr             = explode('---',$item->schools);
+            unset($item->groups);
+            unset($item->schools);
+            $groupsDetails          = [];
+            $schoolsDetails         = [];
+            foreach ($groupsArr as $group){
+                list($id,$name) = explode('#',$group);
+                $groupsDetails[] = ['id' => $id, 'name' => $name ];
+            }
+            list($schoolId,$schoolName) = explode('##',$schoolsArr[0]);
+            $schoolsDetails  = [ 'id'=>$schoolId,'name'=>$schoolName,'classes' => []];
+            $classesArr             = explode('||',$schoolsArr[1]);
+            foreach ($classesArr as $class){
+                list($name,$id) = explode('#',$class);
+                $schoolsDetails['classes'][] = ['id'=>$id,'name'=>$name];
+            }
+            $item->groups   = $groupsDetails;
+            $item->schools  = $schoolsDetails;
+        });
+        return $users;
+    }
     public function getUserDetail( $id = null ){
         if(!$id)
             return false;
@@ -56,7 +102,6 @@ class UserRepository
         return $this;
     }
     public function getSchoolInfo(){
-
         $this->userModel->load('schools.classes');
         $this->userModel->setSchoolInfo();
         if (!empty($this->userModel->schoolIDs)) {

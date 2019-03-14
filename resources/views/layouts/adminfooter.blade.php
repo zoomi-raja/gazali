@@ -1,3 +1,3 @@
-
+@yield('js')
 </body>
 </html>

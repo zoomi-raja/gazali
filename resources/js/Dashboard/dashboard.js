@@ -8,9 +8,7 @@ class Dashboard extends React.Component{
 
     render() {
         return (
-            <main className="main-content bgc-grey-100">
-                <div id="mainContent">
-                    <div className="row gap-20 masonry pos-r">
+            <div className="row gap-20 masonry pos-r">
                         <div className="masonry-sizer col-md-6"></div>
                         <div className="masonry-item w-100">
                             <div className="row gap-20">
@@ -533,8 +531,6 @@ class Dashboard extends React.Component{
                             </div>
                         </div>
                     </div>
-                </div>
-            </main>
         )
     }
 }
