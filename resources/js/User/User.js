@@ -2,10 +2,12 @@ import React from 'react';
 import API from "../utilities/api";
 import api_url from "../utilities/apiurl";
 import headers from "../utilities/headers";
-import {removeItem} from "../utilities/localState";
+import {Link, Route } from "react-router-dom"
+import UserListing from "./UserListing";
+import AddUser from "./AddUser";
 class User extends React.Component{
-    constructor(){
-        super()
+    constructor(props){
+        super(props);
         this.state = {
             users:[]
         };
@@ -17,7 +19,6 @@ class User extends React.Component{
                 if(response.data.STATUS.CODE == 200){
                     this.setState({users:response.data.OUTPUT.DATA})
                 }
-                console.log(response);
             })
             .catch((reason) => {
                 console.log(reason);
@@ -25,61 +26,28 @@ class User extends React.Component{
     }
 
     render(){
+        const { location: { pathname }, match: {url} } = this.props;
+
         return (
             <div className="container-fluid">
-                <h4 className="c-grey-900 mT-10 mB-30">Data Tables</h4>
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="bgc-white bd bdrs-3 p-20 mB-20">
-                            <h4 className="c-grey-900 mB-20">Bootstrap Data Table</h4>
-                            { this.state.users.length > 0 && (
-                                <table id="dataTable" className="table table-striped table-bordered" cellSpacing="0"
-                                       width="100%">
-                                    <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Gender</th>
-                                        <th>Email</th>
-                                        <th>DOB</th>
-                                        <th>school</th>
-                                        <th>class</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Gender</th>
-                                        <th>Email</th>
-                                        <th>DOB</th>
-                                        <th>school</th>
-                                        <th>class</th>
-                                    </tr>
-                                    </tfoot>
-                                    <tbody>
-                                    { this.state.users.map((item,index) => {
-                                        return (<tr  key={index}>
-                                            <td><a href={item.id}>{item.name}</a></td>
-                                            <td>{item.gender}</td>
-                                            <td>{item.email}</td>
-                                            <td>{item.dob}</td>
-                                            <td>{item.schools.name}</td>
-                                            <td>{item.schools.classes.map(function ($item) {
-                                                return $item.name;
-                                            }).join(',')}</td>
-                                        </tr>)
-                                    })
-                                    }
-                                    </tbody>
-                                </table>
-                            )}
-                            {/*@else*/}
-                            {/*<div className="alert alert-dark" role="alert">*/}
-                                {/*No users Exists in system*/}
-                            {/*</div>*/}
-                            {/*@endif*/}
-                        </div>
+                <div className="row mB-20" >
+                    <div className="col-md-4">
+                        <h4 className="c-grey-900">Data Tables</h4>
                     </div>
+                    {
+                        pathname.indexOf("user/add") < 0 &&
+
+                        <div className="col-md-2 offset-md-6">
+                            <Link className="btn btn-primary" to={`${url}/add`}>
+                                Add new User
+                            </Link>
+                        </div>
+                    }
                 </div>
+                <Route path={`${this.props.match.url}/add`} component={AddUser}/>
+                <Route path={this.props.match.path} exact={true} render = {(routeProps) => (
+                    <UserListing {...routeProps} users={this.state.users}/>
+                )}/>
             </div>
         );
     }

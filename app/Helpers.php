@@ -53,7 +53,9 @@ if (! function_exists('get_component')) {
         $mapPaths = ['login' => 'auth', 'register' => 'auth' ];
         $pathArr        = explode('/', (app()->make('request')->path()));
         $componentInfo  = ['type' => '','component' => '' ];
-        array_walk($pathArr,function ($value, $key ) use(&$componentInfo,$mapPaths) {
+        $api            = false;
+
+        array_walk($pathArr,function ($value, $key ) use(&$componentInfo,$mapPaths,&$api) {
             if($value == 'admin' && $key == 0 ) {//todo can set custom path using env variable
                 $componentInfo['component'] .= 'admin';
                 $componentInfo['type']      = 'admin';
@@ -61,7 +63,8 @@ if (! function_exists('get_component')) {
                 $value                      = isset($mapPaths[$value])?$mapPaths[$value]:$value;
                 if( $value == 'api' && $key == 1 ){
                     $componentInfo['type']  .= '/api';
-                }elseif($key <= 2){
+                    $api                    = true;
+                }elseif($key == 1 || ( $key==2 && $api == true )){
                     $componentInfo['component'] .= '/' . $value;
                 }
             }

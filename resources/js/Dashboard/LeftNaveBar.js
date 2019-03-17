@@ -37,7 +37,7 @@ class LeftNaveBar extends React.Component {
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="sidebar-link" to={"/gazali/admin"}  activeClassName={"active"}>
+                            <NavLink className="sidebar-link" exact={true} to={"/gazali/admin"}  activeClassName={"active"}>
                             <span className="icon-holder">
                                 <i className="c-blue-500 ti-home"></i>
                             </span>

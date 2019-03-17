@@ -19,4 +19,7 @@
 Route::get('admin/user/', function(){
     return view('userList');
 });
+Route::get('admin/user/add', function(){
+    return view('userAdd');
+});
 Route::get('admin/user/test', 'Admin\User\Controllers\UserController@test');
